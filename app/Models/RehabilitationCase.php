@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\HandlingType;
 use App\Enums\RehabilitationCaseStatus;
+use App\Traits\RecordsStatusHistory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RehabilitationCase extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, RecordsStatusHistory, SoftDeletes;
 
     protected $fillable = [
         'case_number',

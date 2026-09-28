@@ -2,8 +2,59 @@
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+@source '../../app/Livewire/**/*.php';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-inter: 'Inter', system-ui, sans-serif;
+    --font-sans: 'Inter', system-ui, sans-serif;
+
+    --color-primary: #93000b;
+    --color-primary-container: #b91c1c;
+    --color-on-primary: #ffffff;
+    --color-on-primary-container: #ffcdc7;
+    --color-primary-fixed: #ffdad6;
+    --color-primary-fixed-dim: #ffb4ab;
+    --color-on-primary-fixed: #410002;
+    --color-on-primary-fixed-variant: #93000b;
+
+    --color-secondary: #855300;
+    --color-secondary-container: #fea619;
+    --color-on-secondary: #ffffff;
+    --color-on-secondary-container: #684000;
+    --color-secondary-fixed: #ffddb8;
+    --color-secondary-fixed-dim: #ffb95f;
+    --color-on-secondary-fixed: #2a1700;
+    --color-on-secondary-fixed-variant: #653e00;
+
+    --color-tertiary: #003ea8;
+    --color-tertiary-container: #0053db;
+    --color-on-tertiary: #ffffff;
+    --color-on-tertiary-container: #cdd7ff;
+    --color-tertiary-fixed: #dbe1ff;
+    --color-tertiary-fixed-dim: #b4c5ff;
+    --color-on-tertiary-fixed: #00174b;
+    --color-on-tertiary-fixed-variant: #003ea8;
+
+    --color-surface: #f9f9f9;
+    --color-surface-dim: #dadada;
+    --color-surface-bright: #f9f9f9;
+    --color-surface-container-lowest: #ffffff;
+    --color-surface-container-low: #f3f3f3;
+    --color-surface-container: #eeeeee;
+    --color-surface-container-high: #e8e8e8;
+    --color-surface-container-highest: #e2e2e2;
+
+    --color-on-surface: #1a1c1c;
+    --color-on-surface-variant: #5b403d;
+    --color-inverse-surface: #2f3131;
+    --color-inverse-on-surface: #f0f1f1;
+    --color-outline: #8f6f6c;
+    --color-outline-variant: #e4beb9;
+    --color-surface-tint: #b91c1c;
+
+    --color-error: #ba1a1a;
+    --color-on-error: #ffffff;
+    --color-error-container: #ffdad6;
+    --color-on-error-container: #93000a;
 }

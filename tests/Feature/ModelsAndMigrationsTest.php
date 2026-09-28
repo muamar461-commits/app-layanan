@@ -105,48 +105,51 @@ class ModelsAndMigrationsTest extends TestCase
 
     public function test_all_models_can_be_created_and_associated(): void
     {
-        $workUnit = WorkUnit::create([
-            'name' => 'Bidang Perlindungan dan Jaminan Sosial',
-            'is_active' => true,
-        ]);
+        $workUnit = WorkUnit::firstOrCreate(
+            ['name' => 'Bidang Perlindungan dan Jaminan Sosial'],
+            ['is_active' => true]
+        );
 
-        $district = District::create([
-            'code' => '35.05.01',
-            'name' => 'Kecamatan Kanigoro',
-        ]);
+        $district = District::firstOrCreate(
+            ['code' => '35.05.01'],
+            ['name' => 'Kecamatan Kanigoro']
+        );
 
-        $village = Village::create([
-            'district_id' => $district->id,
-            'code' => '35.05.01.2001',
-            'name' => 'Desa Kanigoro',
-        ]);
+        $village = Village::firstOrCreate(
+            ['code' => '35.05.01.2001'],
+            ['district_id' => $district->id, 'name' => 'Desa Kanigoro']
+        );
 
-        $officer = User::create([
-            'name' => 'Petugas Dinsos',
-            'email' => 'officer@example.com',
-            'password' => bcrypt('secret123'),
-            'phone' => '081234567890',
-            'nik' => '3505011234567890',
-            'work_unit_id' => $workUnit->id,
-            'district_id' => $district->id,
-            'village_id' => $village->id,
-            'is_active' => true,
-        ]);
+        $officer = User::firstOrCreate(
+            ['email' => 'officer@example.com'],
+            [
+                'name' => 'Petugas Dinsos',
+                'password' => bcrypt('secret123'),
+                'phone' => '081234567890',
+                'nik' => '3505011234567890',
+                'work_unit_id' => $workUnit->id,
+                'district_id' => $district->id,
+                'village_id' => $village->id,
+                'is_active' => true,
+            ]
+        );
 
         $this->assertEquals($workUnit->id, $officer->workUnit->id);
         $this->assertEquals($district->id, $officer->district->id);
         $this->assertEquals($village->id, $officer->village->id);
 
-        $serviceType = ServiceType::create([
-            'code' => 'DTSEN',
-            'name' => 'Surat Keterangan DTSEN',
-            'category' => 'Data Sosial',
-            'description' => 'Penerbitan surat keterangan data DTSEN',
-            'handler' => ServiceHandler::Dtsen,
-            'needs_assessment' => false,
-            'sla_days' => 1,
-            'is_active' => true,
-        ]);
+        $serviceType = ServiceType::firstOrCreate(
+            ['code' => 'DTSEN'],
+            [
+                'name' => 'Surat Keterangan DTSEN',
+                'category' => 'Data Sosial',
+                'description' => 'Penerbitan surat keterangan data DTSEN',
+                'handler' => ServiceHandler::Dtsen,
+                'needs_assessment' => false,
+                'sla_days' => 1,
+                'is_active' => true,
+            ]
+        );
 
         $this->assertEquals(ServiceHandler::Dtsen, $serviceType->handler);
 
@@ -189,13 +192,15 @@ class ModelsAndMigrationsTest extends TestCase
 
         $this->assertEquals(DocumentVerificationStatus::Pending, $document->verification_status);
 
-        $dtsenPurpose = DtsenPurpose::create([
-            'code' => 'spmb',
-            'name' => 'SPMB Jalur Afirmasi',
-            'max_decile' => 5,
-            'validity_days' => 30,
-            'is_active' => true,
-        ]);
+        $dtsenPurpose = DtsenPurpose::firstOrCreate(
+            ['code' => 'spmb'],
+            [
+                'name' => 'SPMB Jalur Afirmasi',
+                'max_decile' => 5,
+                'validity_days' => 30,
+                'is_active' => true,
+            ]
+        );
 
         $dtsenCertificate = DtsenCertificate::create([
             'service_request_id' => $serviceRequest->id,
@@ -260,7 +265,7 @@ class ModelsAndMigrationsTest extends TestCase
 
         $this->assertEquals(PbiReason::Emergency, $pbiReactivation->reason);
 
-        $clientCategory = ClientCategory::create([
+        $clientCategory = ClientCategory::firstOrCreate([
             'name' => 'Lanjut Usia Terlantar',
         ]);
 
@@ -273,8 +278,9 @@ class ModelsAndMigrationsTest extends TestCase
             'village_id' => $village->id,
         ]);
 
-        $complaintCategory = ComplaintCategory::create([
+        $complaintCategory = ComplaintCategory::firstOrCreate([
             'name' => 'Permasalahan Lansia Terlantar',
+        ], [
             'is_active' => true,
         ]);
 
@@ -322,13 +328,15 @@ class ModelsAndMigrationsTest extends TestCase
 
         $this->assertTrue($assessment->needs_referral);
 
-        $institution = ReferralInstitution::create([
-            'name' => 'Panti Sosial Tresna Werdha',
-            'type' => 'Panti',
-            'address' => 'Blitar',
-            'contact' => '0342-123456',
-            'is_active' => true,
-        ]);
+        $institution = ReferralInstitution::firstOrCreate(
+            ['name' => 'Panti Sosial Tresna Werdha'],
+            [
+                'type' => 'Panti',
+                'address' => 'Blitar',
+                'contact' => '0342-123456',
+                'is_active' => true,
+            ]
+        );
 
         $referral = Referral::create([
             'referral_number' => 'RJK-202610-00001',
@@ -353,16 +361,18 @@ class ModelsAndMigrationsTest extends TestCase
 
         $this->assertEquals($case->id, $monitoring->rehabilitationCase->id);
 
-        $page = InformationPage::create([
-            'title' => 'Panduan DTSEN',
-            'slug' => 'panduan-dtsen',
-            'category' => InformationCategory::Program,
-            'service_type_id' => $serviceType->id,
-            'description' => 'Informasi lengkap tentang DTSEN',
-            'publish_status' => PublishStatus::Published,
-            'published_at' => now(),
-            'manager_id' => $officer->id,
-        ]);
+        $page = InformationPage::firstOrCreate(
+            ['slug' => 'panduan-dtsen'],
+            [
+                'title' => 'Panduan DTSEN',
+                'category' => InformationCategory::Program,
+                'service_type_id' => $serviceType->id,
+                'description' => 'Informasi lengkap tentang DTSEN',
+                'publish_status' => PublishStatus::Published,
+                'published_at' => now(),
+                'manager_id' => $officer->id,
+            ]
+        );
 
         $form = DownloadableForm::create([
             'information_page_id' => $page->id,
@@ -418,11 +428,10 @@ class ModelsAndMigrationsTest extends TestCase
 
         $this->assertEquals(1, $serviceRequest->dispositions()->count());
 
-        $sequence = NumberSequence::create([
-            'prefix' => 'DTSEN',
-            'period' => '202610',
-            'last_number' => 1,
-        ]);
+        $sequence = NumberSequence::firstOrCreate(
+            ['prefix' => 'DTSEN', 'period' => '202610'],
+            ['last_number' => 1]
+        );
 
         $this->assertEquals(1, $sequence->last_number);
 

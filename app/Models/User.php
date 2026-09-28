@@ -3,17 +3,19 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\Role;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -104,5 +106,35 @@ class User extends Authenticatable
     public function managedInformationPages(): HasMany
     {
         return $this->hasMany(InformationPage::class, 'manager_id');
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasRole(Role::Admin->value);
+    }
+
+    public function isPetugas(): bool
+    {
+        return $this->hasRole(Role::PetugasDinsos->value);
+    }
+
+    public function isPejabat(): bool
+    {
+        return $this->hasRole(Role::PejabatPenandatangan->value);
+    }
+
+    public function isPimpinan(): bool
+    {
+        return $this->hasRole(Role::Pimpinan->value);
+    }
+
+    public function isOperator(): bool
+    {
+        return $this->hasRole([Role::OperatorKecamatan->value, Role::OperatorDesa->value]);
+    }
+
+    public function isMasyarakat(): bool
+    {
+        return $this->hasRole(Role::Masyarakat->value);
     }
 }
